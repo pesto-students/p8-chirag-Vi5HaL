@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap');
+
+*{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Lato';font-size: 22px;
+    font-weight: 700;
+}
+
+body{
+    background: whitesmoke;
+}
+.wrapper{
+    
+}
+.wrapper .sidebar {
+    width: 40px;
+    height: 100%;
+    justify-items: space-between;
+    display: flex;
+    position: absolute;
+    background-color: white;
+
+}
+
+.wrapper .sidebar ul li a {
+    display: inline-flex;
+    text-decoration: none;
+    padding: 15px 5px;
+    margin-top: 30px;
+
+}
+
+.wrapper .sidebar ul li a .item i{
+    color:  gray;
+}
+.wrapper .playlist{
+    width: 100%;
+    background-color:rgba(44, 46, 45, 0.995);
+    height: 300px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color:white;
+}
+.wrapper .playlist .playlist-info{
+    margin: 2rem;
+}
+
+.wrapper .playlist .playlist-icon{
+    margin-left: 3rem;
+}
+.wrapper .playlist .playlist-info .playlist-icon img {
+    width: 200px;
+    height: 200px;
+    
+}
+.wrapper .playlist .playlist-info .playlist-name{
+    margin-bottom: 100px;
+    padding-bottom: 500px;
+}
+/* @Sanjana : require your help to understand why margin is not working with flex */
+.playlist-buttons{ 
+    margin-top:2rem
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-left: 50px;
+    
+  }
+table td {
+    padding: 5px;
+    font-weight: 500;
+}
+
+table td a {
+    border: solid black;
+}
+tr:nth-child(even) {background-color: #dceeee;}
+
+.current {
+    width: 100%;
+    position: absolute;
+    top:700px;
+    left :0px;
+    display: flex;
+    background-color: aqua;
+}
+.current .song-icon img{
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+}
+.current .song-icon p {
+    color:white;
+    font-size: 10px ;
+}
+.current .play-control  {
+    margin:1rem 0 0 15rem; 
+}
+.current .play-control i {
+    margin-left:  5rem;
+}
