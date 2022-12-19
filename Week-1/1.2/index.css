@@ -5,23 +5,33 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Lato';font-size: 22px;
-    font-weight: 700;
+    font-family: 'Lato';
 }
+@media (max-width: 500px) {
+    .wrapper {
+      flex-direction: column-reverse;
+    }
+    ul {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+  }
 
 body{
     background: whitesmoke;
-}
-.wrapper{
+    overflow: hidden;
+    height: 100vh;
     
 }
-.wrapper .sidebar {
-    width: 40px;
-    height: 100%;
-    justify-items: space-between;
+.wrapper{
     display: flex;
-    position: absolute;
-    background-color: white;
+    height: 100%;
+  
+}
+.wrapper .sidebar {
+    flex: 1 0 2%;
 
 }
 
@@ -29,47 +39,59 @@ body{
     display: inline-flex;
     text-decoration: none;
     padding: 15px 5px;
-    margin-top: 30px;
+    margin-top: 10px;
 
 }
 
 .wrapper .sidebar ul li a .item i{
     color:  gray;
 }
+.inner-warpper{
+    flex-direction: row;
+    width:100%
+}
 .wrapper .playlist{
     width: 100%;
     background-color:rgba(44, 46, 45, 0.995);
-    height: 300px;
+    height: 50%;
     display: flex;
-    flex-direction: row;
-    align-items: center;
     color:white;
 }
+.songList{
+    height: 40%;
+}
 .wrapper .playlist .playlist-info{
-    margin: 2rem;
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem;
 }
 
 .wrapper .playlist .playlist-icon{
-    margin-left: 3rem;
+    display: flex;
+    margin: 2rem;
 }
 .wrapper .playlist .playlist-info .playlist-icon img {
-    width: 200px;
-    height: 200px;
-    
+    width: auto;
+    height: auto;
 }
 .wrapper .playlist .playlist-info .playlist-name{
-    margin-bottom: 100px;
-    padding-bottom: 500px;
+   width: 100%;
+   height: 100%;
 }
-/* @Sanjana : require your help to understand why margin is not working with flex */
+
 .playlist-buttons{ 
-    margin-top:2rem
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+}
+.playlist-buttons span{ 
+    height: 20%;
+    width:20%
 }
 
 table {
     border-collapse: collapse;
     width: 100%;
-    margin-left: 50px;
     
   }
 table td {
@@ -84,11 +106,9 @@ tr:nth-child(even) {background-color: #dceeee;}
 
 .current {
     width: 100%;
-    position: absolute;
-    top:700px;
-    left :0px;
     display: flex;
     background-color: aqua;
+    height: 10%;
 }
 .current .song-icon img{
     width: 50px;
