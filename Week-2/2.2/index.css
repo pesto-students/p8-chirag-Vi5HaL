@@ -1,74 +1,74 @@
 .wrapper{
     display: flex;
     justify-content: center;
-    position: relative;
-}
-
-@keyframes rotate {
-   from {transform: rotate(0deg);}
-    to{transform: rotate(90deg);}
-  }
-
-  @keyframes rotate-reverse {
-    from {transform: rotate(0deg);}
-    to {transform: rotate(-90deg);}
-  }
-.top-left{
-    width: 50px;
-    height: 50px;
-    background-color: red;
-    position: relative;
-    transform-origin: left 0px;
-}
-
-
-.sibling:hover ~ .left > .top-left{
-    animation: rotate 1s linear 0s 1 normal forwards ;  
-}
-
-
-.sibling:hover ~ .right > .top-right{
-    animation: rotate-reverse 1s linear 0s 1 normal forwards ;  
-}
-.sibling:hover ~ .left > .bottom-left{
-    animation: rotate-reverse 1s linear 0s 1 normal forwards ;  
-}
-.sibling:hover ~ .right > .bottom-right {
-    animation: rotate 1s linear 0s 1 normal forwards ;  
-}
-.bottom-left{
-    width: 50px;
-    height: 50px;
-    transform-origin: left bottom  0px;
-    background-color: blue;
+ 
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    margin: 0;
 }
 
 .sibling{
-    width: 100px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
     z-index: 10;
     position: absolute;
 }
 .main{
     position: absolute;
-    width: 100px;
-    height: 100px;
-    z-index: -10;
+    width: 200px;
+    height: 200px;
+    z-index: -1;
     justify-content: center;
     text-align: center;
     display: flex;
     flex-direction: column;
 }
 
+.color-box{
+    width: 100px;
+    height: 100px;
+    transition: transform 0.8s;
+}
+
+.top-left{
+    background-color: red;
+    transform-origin: 0% 0%;
+}
 .top-right{
-    width: 50px;
-    height: 50px;
     background-color: yellow;
+    transform-origin: 100% 0%;
     transform-origin: right top  0px;
 }
+
 .bottom-right{
-    width: 50px;
-    height: 50px;
     background-color: green;
+    transform-origin: 100% 100%;;
     transform-origin: right bottom   0px;
 }
+
+.bottom-left{
+    background-color: blue;
+    transform-origin: 0% 100%;
+}
+
+
+.sibling:hover ~ .left > .top-left{
+    transform-origin: 0% 0%;
+    transform: rotate(90deg);
+}
+
+.sibling:hover ~ .right > .top-right{
+    transform-origin: 100% 0%;
+    transform: rotate(-90deg);
+}
+.sibling:hover ~ .right > .bottom-right {
+    transform-origin: 100% 100%;
+    transform: rotate(90deg);
+}
+.sibling:hover ~ .left > .bottom-left{
+    transform-origin: 0% 100%;
+    transform: rotate(-90deg);
+ 
+}
+
