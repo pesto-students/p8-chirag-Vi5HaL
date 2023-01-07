@@ -28,7 +28,7 @@
 .color-box{
     width: 100px;
     height: 100px;
-    transition: transform 0.8s;
+    transition: transform 0.5s;
 }
 
 .top-left{
@@ -38,13 +38,11 @@
 .top-right{
     background-color: yellow;
     transform-origin: 100% 0%;
-    transform-origin: right top  0px;
 }
 
 .bottom-right{
     background-color: green;
     transform-origin: 100% 100%;;
-    transform-origin: right bottom   0px;
 }
 
 .bottom-left{
