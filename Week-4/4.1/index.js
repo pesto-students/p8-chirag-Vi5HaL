@@ -1,141 +1,181 @@
-// Implement a function named getNumber which generatesa random number. 
-// If randomNumber is divisible by 5 it will reject the promise 
-// else it will resolve the promise. 
+// Implement a function named getNumber which generatesa random number.
+// If randomNumber is divisible by 5 it will reject the promise
+// else it will resolve the promise.
 // Let’s also keep the promise resolution/rejection time as a variable.
 // 1.JS promises should not be used.
 // 2.A custom promise function should be created.
 // 3.This function should be able to handle all 3 states Resolve, Reject and Fulfilled.
 // 4.Should be able to accept callbacks as props.
 
-function getNumber(){
-    const randomNum = Math.floor((Math.random() * 100))
-    if(randomNum/5 === 0){
-       return console.log("divisble by 5")
-    }else{
-        throw new Error()
-    }
-}
-
-function promiseFun(fn){
-    try{
-        fn()
-        return function resolve(){
-            return "success"
-        }
-    }catch{
-        return function reject(){
-            return "failure"
-        }
-    }
-}
-console.log(promiseFun(getNumber))
+// function getNumber() {
+//   const randomNum = Math.floor(Math.random() * 100);
+//   if (randomNum / 5 === 0) {
+//     return console.log("divisble by 5");
+//   } else {
+//     throw new Error();
+//   }
+// }
 
 
 
-
-// custom promise class 
-// source : https://medium.com/swlh/implement-a-simple-promise-in-javascript-20c9705f197a
+// source : https://medium.com/nerd-for-tech/implement-your-own-promises-in-javascript-68ddaa6a5409
+const STATE = {
+  PENDING: "PENDING",
+  FULFILLED: "FULFILLED",
+  REJECTED: "REJECTED",
+};
 class MyPromise {
-    constructor(handler) {
-        this.status = "pending";
-        this.onFulfilledCallbacks = [];
-        this.onRejectedCallbacks = [];
+  constructor(callback) {
+    // Initial state of Promise is empty
+    this.state = STATE.PENDING;
+    this.value = undefined;
+    this.handlers = [];
+    this.timeout = 0;
+    // Invoke callback by passing the _resolve and the _reject function of our class
+    try {
+      callback(this._resolve, this._reject);
+    } catch (err) {
+      this._reject(err);
+    }
+  }
+  _resolve = (value) => {
+    this.updateResult(value, STATE.FULFILLED);
+  };
 
-        const resolve = value => {
-            if (this.status === "pending") {
-                this.status = "fulfilled";
-                this.value = value;
-                this.onFulfilledCallbacks.forEach(fn => fn(value));
-            }
-        };
+  _reject = (error) => {
+    this.updateResult(error, STATE.REJECTED);
+  };
 
-        const reject = value => {
-            if (this.status === "pending") {
-                this.status = "rejected";
-                this.value = value;
-                this.onRejectedCallbacks.forEach(fn => fn(value));
-            }
-        };
+  then(onSuccess, onFail) {
+    return new MyPromise((res, rej) => {
+      this.addHandlers({
+        onSuccess: function (value) {
+          // if no onSuccess provided, resolve the value for the next promise chain
+          if (!onSuccess) {
+            return res(value);
+          }
+          try {
+            return res(onSuccess(value));
+          } catch (err) {
+            return rej(err);
+          }
+        },
+        onFail: function (value) {
+          // if no onFail provided, reject the value for the next promise chain
+          if (!onFail) {
+            return rej(value);
+          }
+          try {
+            return res(onFail(value));
+          } catch (err) {
+            return rej(err);
+          }
+        },
+      });
+    });
+  }
+  /*
+    Since then method take the second function as onFail, 
+    we can leverage it while implementing catch
+    */
+  catch(onFail) {
+    return this.then(null, onFail);
+  }
 
-        try {
-            handler(resolve, reject);
-        } catch (err) {
-            reject(err);
-        }
+  // Finally block returns a promise which fails or succeedes with the previous promise resove value
+  finally(callback) {
+    return new MyPromise((res, rej) => {
+       let val;
+       let wasRejected;
+       this.then((value) => {
+         wasRejected = false;
+         val = value;
+         return callback();
+       }, (err) => {
+         wasRejected = true;
+         val = err;
+         return callback();
+       }).then(() => {
+         // If the callback didn't have any error we resolve/reject the promise based on promise state
+         if(!wasRejected) {
+           return res(val);
+         } 
+         return rej(val);
+       })
+    })
+  }
+
+  addHandlers(handlers) {
+    this.handlers.push(handlers);
+    this.executeHandlers();
+  }
+
+  executeHandlers() {
+    // Don't execute handlers if promise is not yet fulfilled or rejected
+    if (this.state === STATE.PENDING) {
+      return null;
     }
 
-    then(onFulfilled, onRejected) {
-        return new Promise((resolve, reject) => {
-            if (this.status === "pending") {
-                this.onFulfilledCallbacks.push(() => {
-                    try {
-                        const fulfilledFromLastPromise = onFulfilled(this.value);
-                        if (fulfilledFromLastPromise instanceof Promise) {
-                            fulfilledFromLastPromise.then(resolve, reject);
-                        } else {
-                            resolve(fulfilledFromLastPromise);
-                        }
-                    } catch (err) {
-                        reject(err);
-                    }
-                });
-                this.onRejectedCallbacks.push(() => {
-                    try {
-                        const rejectedFromLastPromise = onRejected(this.value);
-                        if (rejectedFromLastPromise instanceof Promise) {
-                            rejectedFromLastPromise.then(resolve, reject);
-                        } else {
-                            reject(rejectedFromLastPromise);
-                        }
-                    } catch (err) {
-                        reject(err);
-                    }
-                });
-            }
+    // We have multiple handlers because add them for .finally block too
+    this.handlers.forEach((handler) => {
+      if (this.state === STATE.FULFILLED) {
+        return handler.onSuccess(this.value);
+      }
+      return handler.onFail(this.value);
+    });
+    // After processing all handlers, we reset it to empty.
+    this.handlers = [];
+  }
 
-            if (this.status === "fulfilled") {
-                try {
-                    const fulfilledFromLastPromise = onFulfilled(this.value);
-                    if (fulfilledFromLastPromise instanceof Promise) {
-                        fulfilledFromLastPromise.then(resolve, reject);
-                    } else {
-                        resolve(fulfilledFromLastPromise);
-                    }
-                } catch (err) {
-                    reject(err);
-                }
+  updateResult(value, state) {
+    // This is to make the processing async
+    setTimeout(() => {
+      /*
+        Process the promise if it is still in pending state. 
+        An already rejected or resolved promise is not processed
+      */
+      if (this.state !== STATE.PENDING) {
+        return;
+      }
 
-            }
+      // check is value is also a promise
+      if (this.isThenable(value)) {
+        return value.then(this._resolve, this._reject);
+      }
 
-            if (this.status === "rejected") {
-                try {
-                    const rejectedFromLastPromise = onRejected(this.value);
-                    if (rejectedFromLastPromise instanceof Promise) {
-                        rejectedFromLastPromise.then(resolve, reject);
-                    } else {
-                        reject(rejectedFromLastPromise);
-                    }
-                } catch (err) {
-                    reject(err);
-                }
-            }
-        });
+      this.value = value;
+      this.state = state;
 
+      // execute handlers if already attached
+      this.executeHandlers();
+    }, this.timeout);
+  }
+  isThenable(value) {
+    if (
+      typeof value === "object" &&
+      value !== null &&
+      value.then &&
+      typeof value.then === "function"
+    ) {
+      return true;
     }
+    return false;
+  }
 }
 
-// testing code
-let p1 = new MyPromise((resolve, reject) => {
-    setTimeout(() => resolve('resolved first one'), 1000);
-});
-p1.then((res) => {
-    console.log(res);
-    return new MyPromise(resolve => {
-        setTimeout(() => resolve('resolved second one'), 1000);
-    });
-}).then(res => {
-    console.log(res);
-});
+const getNumber = new MyPromise((resolve,reject) => {
+    const randomNum = Math.floor(Math.random() * 100);
+      if (randomNum / 5 === 0) {
+        return resolve("Divisble by 5");
+      } else {
+        return reject("Not divisble by 5");
+      }
+})
 
-// 1 sec later, 'resolved first one'
-// 1 sec later, 'resolved second one'
+getNumber.then((res) => {
+    console.log(res)
+}).catch((err) => {
+    console.log(err)
+})
+// custom promise class another
+// source : https://medium.com/swlh/implement-a-simple-promise-in-javascript-20c9705f197a
