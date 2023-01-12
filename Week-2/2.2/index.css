@@ -18,7 +18,7 @@
     position: absolute;
     width: 200px;
     height: 200px;
-    z-index: -1;
+    
     justify-content: center;
     text-align: center;
     display: flex;
@@ -29,6 +29,8 @@
     width: 100px;
     height: 100px;
     transition: transform 0.5s;
+    z-index: 5;
+    position: relative;
 }
 
 .top-left{
