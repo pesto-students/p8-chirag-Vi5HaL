@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap');
+
+*{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Lato';
+}
+@media (max-width: 500px) {
+    .wrapper {
+      flex-direction: column-reverse;
+    }
+    ul {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+  }
+
+body{
+    background: whitesmoke;
+    overflow: hidden;
+    height: 100vh;
+    
+}
+.wrapper{
+    display: flex;
+    height: 100%;
+  
+}
+.wrapper .sidebar {
+    flex: 1 0 2%;
+
+}
+
+.wrapper .sidebar ul li a {
+    display: inline-flex;
+    text-decoration: none;
+    padding: 15px 5px;
+    margin-top: 10px;
+
+}
+
+.wrapper .sidebar ul li a .item i{
+    color:  gray;
+}
+.inner-warpper{
+    flex-direction: row;
+    width:100%
+}
+.wrapper .playlist{
+    width: 100%;
+    background-color:rgba(44, 46, 45, 0.995);
+    height: 50%;
+    display: flex;
+    color:white;
+}
+.songList{
+    height: 40%;
+}
+.wrapper .playlist .playlist-info{
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem;
+}
+
+.wrapper .playlist .playlist-icon{
+    display: flex;
+    margin: 2rem;
+}
+.wrapper .playlist .playlist-info .playlist-icon img {
+    width: auto;
+    height: auto;
+}
+.wrapper .playlist .playlist-info .playlist-name{
+   width: 100%;
+   height: 100%;
+}
+
+.playlist-buttons{ 
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+}
+.playlist-buttons span{ 
+    height: 20%;
+    width:20%
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    
+  }
+table td {
+    padding: 5px;
+    font-weight: 500;
+}
+
+table td a {
+    border: solid black;
+}
+tr:nth-child(even) {background-color: #dceeee;}
+
+.current {
+    width: 100%;
+    display: flex;
+    background-color: aqua;
+    height: 10%;
+}
+.current .song-icon img{
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+}
+.current .song-icon p {
+    color:white;
+    font-size: 10px ;
+}
+.current .play-control  {
+    margin:1rem 0 0 15rem; 
+}
+.current .play-control i {
+    margin-left:  5rem;
+}
