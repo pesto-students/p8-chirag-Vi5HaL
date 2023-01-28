@@ -1,0 +1,19 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 250px;
+}
+
+.action-button{
+}
+
+.action-button .add{
+
+    background-color: aqua;
+}
+
+.action-button .subtract{
+    background-color: rgb(243, 99, 99);
+}
